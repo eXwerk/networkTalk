@@ -30,7 +30,7 @@ public class Grid {
 			case FREE:
 				return " ";
 			case DEBUG:
-				return "#";
+				return ".";
 			}
 			return null;
 		}
@@ -40,7 +40,7 @@ public class Grid {
 	public State[][] grid;
 	
 	public Grid() {
-		limiter = 8;
+		limiter = 3;
 		grid = new State[limiter][limiter];
 		
 		for (State[] row : grid) {
@@ -50,21 +50,21 @@ public class Grid {
 	
 	public void setCoin(int column) throws InterruptedException {
 		int row = 0;
-		while (row < grid.length) {
-			if (grid[row][column] == State.DEBUG) {
+		boolean state = false;
+		
+		while (row < grid.length && state != true) {
+			if (grid[row][column] == State.DEBUG && row <= grid.length) {
 				grid[row][column] = State.ME;
 				clearConsole();
 				printGrid();
 				System.out.println("\n");
-				Thread.sleep(500);
+				Thread.sleep(200);
 				grid[row][column] = State.DEBUG;
-				row++;				
+				row++;
+			} else { 
+				state = true;
 			}
-			//TODO: Endlosschleife hier
 		}
-//		grid[row][column] = State.ME;
-//		clearConsole();
-//		printGrid();
 	}
 
 	public void printGrid() {
@@ -90,18 +90,7 @@ public class Grid {
 
 	public static void main(String[] args) throws InterruptedException {
 		Grid grid = new Grid();
-		//line, row(starting with 0)
-//		for (int i = 0; i < 5; i++) {
-//			grid.clearConsole();
-//			grid.setCoin(i, 0);
-//			grid.printGrid();
-//			Thread.sleep(500);
-//		}
-		grid.grid[7][0] = State.ME;
+//		grid.grid[grid.grid.length - 1][0] = State.ME;
 		grid.setCoin(0);
-		System.out.println("--------------------");
-		grid.grid[6][0] = State.ME;
-		grid.setCoin(0);		
-//		grid.printGrid();
 	}
 }
